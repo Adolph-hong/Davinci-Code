@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>終極密碼遊戲</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    #message {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    input[type="number"] {
+      padding: 10px;
+      width: 200px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>終極密碼遊戲</h1>
+  <p>猜一個數字（1 到 100）</p>
+  <input type="number" class="guessInput" min="1" max="100" />
+  <button class="submitBtn">送出</button>
+  <p class="message"></p>
+
+  <script>
+    // 遊戲變數
+    const secretNumber = Math.floor(Math.random() * 100) + 1; // 隨機生成 1 到 100 的密碼
+    let minRange = 1;
+    let maxRange = 100;
+
+    // 取得 DOM 元素
+    const guessInput = document.querySelector(".guessInput");
+    const submitBtn = document.querySelector(".submitBtn");
+    const message = document.querySelector(".message");
+
+    // 點擊按鈕時的事件處理函數
+    submitBtn.addEventListener("click", () => {
+      let userGuess = Math.floor(guessInput.value);
+
+      // 檢查輸入是否有效
+      if (!userGuess || userGuess < minRange || userGuess > maxRange) {
+        message.textContent = `請輸入有效數字，範圍：${minRange} 到 ${maxRange}`;
+        return;
+      }
+
+      // 核對數字
+      if (userGuess === secretNumber) {
+        message.textContent = "恭喜！你猜對了！🎉";
+        message.style.color = "green";
+        submitBtn.disabled = true; // 禁用按鈕
+        guessInput.disabled = true;
+      } else if (userGuess < secretNumber) {
+        minRange = userGuess; // 更新最小範圍
+        message.textContent = `再高一點！範圍是：${minRange} 到 ${maxRange}`;
+      } else {
+        maxRange = userGuess; // 更新最大範圍
+        message.textContent = `再低一點！範圍是：${minRange} 到 ${maxRange}`;
+      }
+
+      // 清空輸入框
+      guessInput.value = "";
+
+    });
+  </script>
+</body>
+</html>
